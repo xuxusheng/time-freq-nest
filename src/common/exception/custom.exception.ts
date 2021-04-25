@@ -100,3 +100,23 @@ export class ServiceUnavailableException extends CustomException {
     super(ErrCodes.ServiceUnavailable, errMsg, HttpStatus.SERVICE_UNAVAILABLE);
   }
 }
+
+// --- token 相关错误
+
+export class TokenEmptyException extends CustomException {
+  constructor(errMsg = '鉴权失败，token 不存在') {
+    super(ErrCodes.TokenEmpty, errMsg, HttpStatus.UNAUTHORIZED);
+  }
+}
+
+export class TokenExpiredException extends CustomException {
+  constructor(errMsg = '鉴权失败，token 已过期') {
+    super(ErrCodes.TokenExpired, errMsg, HttpStatus.UNAUTHORIZED);
+  }
+}
+
+export class TokenInvalidException extends CustomException {
+  constructor(errMsg = '鉴权失败，token 不合法') {
+    super(ErrCodes.TokenInvalid, errMsg, HttpStatus.UNAUTHORIZED);
+  }
+}

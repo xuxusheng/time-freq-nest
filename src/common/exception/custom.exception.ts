@@ -40,7 +40,7 @@ export class CustomException {
   }
 }
 
-enum ErrCodes {
+export enum ErrCodes {
   BadRequest = 10000400,
   Unauthorized = 10000401,
   Forbidden = 10000403,

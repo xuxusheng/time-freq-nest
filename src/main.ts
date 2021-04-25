@@ -11,6 +11,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true, // 在 dto 中未定义的字段，将自动被过滤掉
       exceptionFactory: (errors) => {
         return new BadRequestException().withDetail(
           flattenDepth(

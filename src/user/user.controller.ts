@@ -12,6 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindOneParams } from './dto/find-one.params';
 
 @Controller('user')
 export class UserController {
@@ -28,8 +29,8 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOne(@Param() params: FindOneParams) {
+    return this.userService.findOne(params.id);
   }
 
   @Patch(':id')

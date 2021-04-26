@@ -647,6 +647,14 @@
     jsonc-parser "3.0.0"
     pluralize "8.0.0"
 
+"@nestjs/terminus@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.npm.taobao.org/@nestjs/terminus/download/@nestjs/terminus-7.1.2.tgz#0d6e0500c7c524725442c0a66e3543f2a2a7de41"
+  integrity sha1-DW4FAMfFJHJUQsCmbjVD8qKn3kE=
+  dependencies:
+    check-disk-space "2.1.0"
+    deprecate "^1.1.1"
+
 "@nestjs/testing@^7.6.15":
   version "7.6.15"
   resolved "https://registry.npm.taobao.org/@nestjs/testing/download/@nestjs/testing-7.6.15.tgz#eed34846a8b2b5ddb0ff6bd74cdcb4344c364c40"
@@ -1700,6 +1708,11 @@ chardet@^0.7.0:
   resolved "https://registry.npm.taobao.org/chardet/download/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha1-kAlISfCTfy7twkJdDSip5fDLrZ4=
 
+check-disk-space@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/check-disk-space/download/check-disk-space-2.1.0.tgz#2e77fe62f30d9676dc37a524ea2008f40c780295"
+  integrity sha1-Lnf+YvMNlnbcN6Uk6iAI9Ax4ApU=
+
 chokidar@3.5.1, chokidar@^3.4.2:
   version "3.5.1"
   resolved "https://registry.nlark.com/chokidar/download/chokidar-3.5.1.tgz?cache=0&sync_timestamp=1618847160842&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fchokidar%2Fdownload%2Fchokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
@@ -2087,6 +2100,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/depd/download/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+deprecate@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/deprecate/download/deprecate-1.1.1.tgz#4632e981fc815eeaf00be945a40359c0f8bf9913"
+  integrity sha1-RjLpgfyBXurwC+lFpANZwPi/mRM=
 
 destroy@~1.0.4:
   version "1.0.4"

@@ -4,9 +4,10 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 import {
   BadRequestException as CustomBadRequestException,
@@ -17,10 +18,12 @@ import {
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(HttpExceptionFilter.name);
+
   catch(exception: CustomException | Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    // const request = ctx.getRequest<Request>();
+    const req = ctx.getRequest<Request>();
+    const res = ctx.getResponse<Response>();
 
     let err: CustomException;
 
@@ -42,7 +45,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       err = new InternalServerErrorException().withDebug(exception.message);
     } else if (typeof exception === 'string') {
       // 抛出字符串
-      console.warn('不建议直接 throw 字符串，请修改代码');
+      this.logger.error('不建议直接 throw 字符串，请修改代码');
       err = new InternalServerErrorException().withDebug(exception);
     } else {
       // 抛出的错误类型有误
@@ -51,6 +54,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    response.status(err.statusCode).json(err.toResponse());
+    this.logger.error(
+      JSON.stringify({
+        reqId: req.header('x-request-id'),
+        url: req.originalUrl,
+        res: err.toResponse(),
+      }),
+    );
+    res.status(err.statusCode).json(err.toResponse());
   }
 }

@@ -1,4 +1,3 @@
-import { Response } from 'express';
 import {
   ArgumentsHost,
   BadRequestException,
@@ -7,12 +6,13 @@ import {
   HttpException,
   NotFoundException,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import {
-  CustomException,
   BadRequestException as CustomBadRequestException,
-  NotFoundException as CustomNotFoundException,
+  CustomException,
   InternalServerErrorException,
+  NotFoundException as CustomNotFoundException,
 } from './custom.exception';
 
 @Catch()

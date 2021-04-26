@@ -1,22 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  ParseIntPipe,
-  UseGuards,
-  Request,
+  Get,
   Logger,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { FindOneParams } from './dto/find-one.params';
 import { JwtAuthGuard } from '../../common/guard/jwt-auth.guard';
+import { CreateUserDto } from './dto/create-user.dto';
+import { FindOneParams } from './dto/find-one.params';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {

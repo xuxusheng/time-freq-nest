@@ -9,13 +9,13 @@ export class UserService {
 
   private readonly users = [
     {
-      userId: 1,
-      username: 'john',
+      id: 1,
+      name: 'john',
       password: 'changeme',
     },
     {
-      userId: 2,
-      username: 'xs',
+      id: 2,
+      name: 'xs',
       password: '1314',
     },
   ];
@@ -35,7 +35,7 @@ export class UserService {
   }
 
   findOneByName(name: string) {
-    return this.users.find((user) => user.username === name);
+    return this.users.find((user) => user.name === name);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

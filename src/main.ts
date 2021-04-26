@@ -1,4 +1,4 @@
-import helmet from 'helmet';
+import * as helmet from 'helmet';
 import { flattenDepth } from 'lodash';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';

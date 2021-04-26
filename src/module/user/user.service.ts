@@ -21,12 +21,10 @@ export class UserService {
   ];
 
   create(createUserDto: CreateUserDto) {
-    this.logger.log('CreateUser');
-
     return createUserDto;
   }
 
-  findAll() {
+  findMany() {
     return `This action returns all user`;
   }
 
@@ -42,7 +40,7 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  delete(id: number) {
     return `This action removes a #${id} user`;
   }
 }

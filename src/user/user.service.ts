@@ -7,6 +7,19 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserService {
   private readonly logger = new Logger(UserService.name);
 
+  private readonly users = [
+    {
+      userId: 1,
+      username: 'john',
+      password: 'changeme',
+    },
+    {
+      userId: 2,
+      username: 'xs',
+      password: '1314',
+    },
+  ];
+
   create(createUserDto: CreateUserDto) {
     this.logger.log('CreateUser');
 
@@ -19,6 +32,10 @@ export class UserService {
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
+  }
+
+  findOneByName(name: string) {
+    return this.users.find((user) => user.username === name);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -5,7 +5,7 @@ import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { LoginRes } from './module/auth/entity/login-res.entity';
 import { DWithP, Resp } from './module/shared/decorator/api-res.decorator';
-import { User } from './module/shared/entitiy';
+import { UserSwagger } from './module/shared/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +18,7 @@ async function bootstrap() {
     .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
-    extraModels: [DWithP, Resp, LoginRes, User],
+    extraModels: [DWithP, Resp, LoginRes, UserSwagger],
   });
   SwaggerModule.setup('swagger', app, document);
 

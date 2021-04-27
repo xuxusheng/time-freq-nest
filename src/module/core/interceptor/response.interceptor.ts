@@ -36,7 +36,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
         errMsg: '',
         errDetail: [],
         errDebug: '',
-        data,
+        data: data || {},
       })),
       tap((data) => {
         this.logger.log(

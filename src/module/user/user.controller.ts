@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,12 +14,14 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request } from 'express';
+import { User } from '@prisma/client';
 
+import { NotFoundException } from '../core/exception';
 import { ApiPageRes, ApiRes } from '../shared/decorator/api-res.decorator';
 import { FindOneDto } from '../shared/dto/find-one.dto';
-import { User } from '../shared/entitiy';
+import { UserSwagger } from '../shared/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindManyUserDto } from './dto/find-many-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -36,25 +37,32 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: '新建用户' })
-  @ApiRes(User, ApiCreatedResponse)
-  create(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
-    return this.userService.create(createUserDto);
+  @ApiRes(UserSwagger, ApiCreatedResponse)
+  async create(@Body() data: CreateUserDto): Promise<Omit<User, 'password'>> {
+    const user = await this.userService.create(data);
+    delete user.password;
+    return user;
   }
 
   //  --- R ---
 
   @Get()
   @ApiOperation({ summary: '查询多个用户' })
-  @ApiPageRes(User)
-  findMany() {
-    return this.userService.findMany();
+  @ApiPageRes(UserSwagger)
+  listAndCount(@Body() data: FindManyUserDto) {
+    const { query, pn, ps } = data;
+    return this.userService.listAndCount(query, pn, ps);
   }
 
   @Get(':id')
   @ApiOperation({ summary: '查询单个用户' })
-  @ApiRes(User)
-  findOne(@Param() params: FindOneDto) {
-    return this.userService.findOneById(params.id);
+  @ApiRes(UserSwagger)
+  async findOne(@Param() params: FindOneDto) {
+    const user = await this.userService.findOneById(params.id);
+    if (!user) {
+      throw new NotFoundException('用户不存在');
+    }
+    return user;
   }
 
   // --- U ---
@@ -65,8 +73,8 @@ export class UserController {
     description: '只能修改除密码等敏感信息之外的基础信息',
   })
   @ApiRes()
-  update(@Param() params: FindOneDto, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(params.id, updateUserDto);
+  update(@Param() params: FindOneDto, @Body() data: UpdateUserDto) {
+    return this.userService.update(params.id, data);
   }
 
   // --- D ---
@@ -76,7 +84,8 @@ export class UserController {
     summary: '删除单个用户',
   })
   @ApiRes()
-  delete(@Param() params: FindOneDto) {
-    return this.userService.delete(params.id);
+  async delete(@Param() params: FindOneDto) {
+    await this.userService.delete(params.id);
+    return;
   }
 }

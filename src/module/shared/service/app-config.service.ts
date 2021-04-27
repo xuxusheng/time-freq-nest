@@ -5,6 +5,14 @@ import { ConfigService as NestConfigService } from '@nestjs/config';
 export class AppConfigService {
   constructor(private configService: NestConfigService) {}
 
+  get isProd(): boolean {
+    return this.nodeEnv === 'production';
+  }
+
+  get isDev(): boolean {
+    return this.nodeEnv === 'development';
+  }
+
   get nodeEnv(): string {
     return this.configService.get('NODE_ENV');
   }

@@ -26,10 +26,9 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      // load: [databaseConfig],
-      cache: false, // 直接缓存住，因为每次修改环境变量之后，集群会自动重新 deploy
+      cache: true, // 直接缓存住，因为每次修改环境变量之后，集群会自动重新 deploy
       isGlobal: true,
-      // ignoreEnvFile: process.env.NODE_ENV === 'production', // 生产环境时，忽略 env 文件，使用容器的系统环境变量,
+      // ignoreEnvFile: true, // 生产环境时，忽略 env 文件，使用容器的系统环境变量,
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
@@ -43,13 +42,14 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
   ],
   providers: [
     {
-      provide: APP_GUARD, // 这种方式声明全局的 Guard，相比与 app.use，可以在 Guard 中注入依赖
-      useClass: AuthGuard,
-    },
-    {
       provide: APP_FILTER, // 同上
       useClass: HttpExceptionFilter,
     },
+    {
+      provide: APP_GUARD, // 这种方式声明全局的 Guard，相比与 app.use，可以在 Guard 中注入依赖
+      useClass: AuthGuard,
+    },
+
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
@@ -57,8 +57,12 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({
-        // 在 dto 中未定义的字段，将自动被过滤掉
+        // 在 dto 中未定义的字段，将自动被过滤掉，这个一定要打开，防止直接将 body 传给 prisma 的 update 函数时，修改了预期之外的字段
         whitelist: true,
+        transform: true,
+        transformOptions: {
+          enableImplicitConversion: true, // 设置为 true 后，dto 中的字段会根据声明的 ts 类型自动转换（string 到 number ），例如 FindOneDto 中的 id
+        },
         // 将校验库抛出的错误，重新格式化成自定义的错误，便于接口返回错误信息
         exceptionFactory: (errors) => {
           return new BadRequestException().withDetail(

@@ -718,6 +718,23 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
+"@prisma/client@2.21.2":
+  version "2.21.2"
+  resolved "https://registry.nlark.com/@prisma/client/download/@prisma/client-2.21.2.tgz#ca8489832da1d61add429390210be4d7896e5e29"
+  integrity sha1-yoSJgy2h1hrdQpOQIQvk14luXik=
+  dependencies:
+    "@prisma/engines-version" "2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d"
+
+"@prisma/engines-version@2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d":
+  version "2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d"
+  resolved "https://registry.nlark.com/@prisma/engines-version/download/@prisma/engines-version-2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d.tgz#b749bae4173eb766dafc298aaa7d883c2dbe555b"
+  integrity sha1-t0m65Bc+t2ba/CmKqn2IPC2+VVs=
+
+"@prisma/engines@2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d":
+  version "2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d"
+  resolved "https://registry.nlark.com/@prisma/engines/download/@prisma/engines-2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d.tgz#aafed60c9506bc766e49ea60b9f8ce7da2385bc6"
+  integrity sha1-qv7WDJUGvHZuSepgufjOfaI4W8Y=
+
 "@schematics/schematics@0.1102.6":
   version "0.1102.6"
   resolved "https://registry.nlark.com/@schematics/schematics/download/@schematics/schematics-0.1102.6.tgz#2ce02f7c11558471628eafeb34faaa7f5ab4b22c"
@@ -4760,6 +4777,13 @@ pretty-format@^26.0.0, pretty-format@^26.6.2:
     ansi-regex "^5.0.0"
     ansi-styles "^4.0.0"
     react-is "^17.0.1"
+
+prisma@2.21.2:
+  version "2.21.2"
+  resolved "https://registry.nlark.com/prisma/download/prisma-2.21.2.tgz#a73b4cbe92a884aa98b317684d6741871b5e94a5"
+  integrity sha1-pztMvpKohKqYsxdoTWdBhxtelKU=
+  dependencies:
+    "@prisma/engines" "2.21.0-36.e421996c87d5f3c8f7eeadd502d4ad402c89464d"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

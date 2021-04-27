@@ -1,10 +1,10 @@
-import { IsNumberString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class FindOneDto {
   /**
    * 主键 ID
    * @example 1
    */
-  @IsNumberString()
+  @IsNumber()
   id: number;
 }

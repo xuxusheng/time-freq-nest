@@ -20,7 +20,7 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     const { name, password } = loginDto;
     return {
-      token: this.authService.login(name, password),
+      token: await this.authService.login(name, password),
     };
   }
 }

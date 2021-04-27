@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { sign } from 'jsonwebtoken';
 
-import { UnauthorizedException } from '../../common/exception';
+import { UnauthorizedException } from '../core/exception';
+import { AppConfigService } from '../shared/app-config.service';
+import { JwtPayload } from '../shared/interface/jwt.interface';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
+    private configService: AppConfigService,
     private userService: UserService,
   ) {}
 
@@ -16,8 +18,11 @@ export class AuthService {
     if (!user || user.password !== password) {
       throw new UnauthorizedException('用户名或密码错误');
     }
-    return this.jwtService.sign({
-      sub: user.id,
-    });
+
+    const payload: JwtPayload = {
+      id: user.id,
+    };
+
+    return sign(payload, this.configService.jwtSecret);
   }
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -14,17 +15,18 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 
-import { ApiPageRes, ApiRes } from '../../common/decorator/api-res.decorator';
-import { FindOneDto } from '../../common/dto/find-one.dto';
+import { ApiPageRes, ApiRes } from '../shared/decorator/api-res.decorator';
+import { FindOneDto } from '../shared/dto/find-one.dto';
+import { User } from '../shared/entitiy';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entitiy/user.entity';
 import { UserService } from './user.service';
 
-@ApiTags('user - 用户')
-@ApiBearerAuth()
 @Controller('users')
+@ApiBearerAuth()
+@ApiTags('user - 用户')
 export class UserController {
   private readonly logger = new Logger(UserController.name);
 
@@ -35,7 +37,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: '新建用户' })
   @ApiRes(User, ApiCreatedResponse)
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
     return this.userService.create(createUserDto);
   }
 
@@ -52,7 +54,7 @@ export class UserController {
   @ApiOperation({ summary: '查询单个用户' })
   @ApiRes(User)
   findOne(@Param() params: FindOneDto) {
-    return this.userService.findOne(params.id);
+    return this.userService.findOneById(params.id);
   }
 
   // --- U ---
@@ -64,7 +66,6 @@ export class UserController {
   })
   @ApiRes()
   update(@Param() params: FindOneDto, @Body() updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
     return this.userService.update(params.id, updateUserDto);
   }
 

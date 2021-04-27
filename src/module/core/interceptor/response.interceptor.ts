@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { HealthController } from '../../module/health/health.controller';
+import { HealthController } from '../../health/health.controller';
 
 interface Response<T> {
   errCode: number;

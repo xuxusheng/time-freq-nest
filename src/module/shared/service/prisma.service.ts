@@ -15,6 +15,16 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
+
+    // 创建一个初始账户
+    if ((await this.user.count()) === 0) {
+      await this.user.create({
+        data: {
+          name: 'admin',
+          password: 'admin',
+        },
+      });
+    }
   }
 
   async onModuleDestroy() {

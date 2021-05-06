@@ -1,3 +1,4 @@
+import { TracingHttpInterceptor, TracingModule } from '@donews/nestjs-tracing';
 import {
   MiddlewareConsumer,
   Module,
@@ -33,9 +34,28 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
           .default('development'),
+        APP_NAME: Joi.string().default('time-freq-nest'),
+        JAEGER_URL: Joi.string().optional(),
         DATABASE_DSN: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
       }),
+    }),
+    TracingModule.forRoot({
+      tracingConfig: {
+        // 使用异步模块，从 AppConfig 中拿有依赖报错的问题，还需要研究下
+        serviceName: process.env.APP_NAME || 'time-freq-nest',
+        sampler: {
+          param: 1,
+          type: 'const',
+        },
+        reporter: {
+          collectorEndpoint:
+            process.env.JAEGER_URL || 'http://localhost:14268/api/traces',
+        },
+      },
+      tracingOption: {
+        tags: {},
+      },
     }),
     SharedModule,
     UserModule,
@@ -49,7 +69,10 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
       provide: APP_GUARD, // 这种方式声明全局的 Guard，相比与 app.use，可以在 Guard 中注入依赖
       useClass: AuthGuard,
     },
-
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TracingHttpInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,

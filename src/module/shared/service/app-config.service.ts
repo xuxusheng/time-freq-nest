@@ -17,6 +17,14 @@ export class AppConfigService {
     return this.configService.get('NODE_ENV');
   }
 
+  get appName(): string {
+    return this.configService.get('APP_NAME');
+  }
+
+  get jaegerUrl(): string {
+    return this.configService.get('JAEGER_URL');
+  }
+
   get databaseDSN(): string {
     return this.configService.get('DATABASE_DSN');
   }

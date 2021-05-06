@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { BadRequestException, NotFoundException } from '../core/exception';
+import { BadRequestException } from '../core/exception';
 import { PrismaService } from '../shared/service/prisma.service';
+import { catchPrismaNotFoundError, encodePassword } from '../shared/utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -16,10 +17,11 @@ export class UserService {
     const { name, password } = data;
     const user$ = this.prisma.user;
     // 判断用户名是否已存在
-    if ((await user$.count({ where: { name } })) !== 0) {
+    if (await this.isNameExist(name)) {
       throw new BadRequestException('用户名已被占用');
     }
-    return user$.create({ data: { name, password } });
+    const hash = await encodePassword(password);
+    return user$.create({ data: { name, password: hash } });
   }
 
   async listAndCount(query: string, pn: number, ps: number) {
@@ -45,29 +47,30 @@ export class UserService {
     return this.prisma.user.findFirst({ where: { name } });
   }
 
+  async isNameExist(name: string, excludeId = 0): Promise<boolean> {
+    const where: Prisma.UserWhereInput = { name };
+    if (!!excludeId) {
+      where.id = { not: excludeId };
+    }
+    const count = await this.prisma.user.count({ where });
+    return count !== 0;
+  }
+
   async update(id: number, data: UpdateUserDto) {
     const user$ = this.prisma.user;
 
-    if (
-      data.name &&
-      (await user$.count({ where: { name: data.name, id: { not: id } } })) !== 0
-    ) {
+    if (data.name && (await this.isNameExist(data.name, id))) {
       throw new BadRequestException('用户名已被占用');
     }
-    return user$.update({ where: { id }, data });
+
+    return user$.update({ where: { id }, data }).catch((err) => {
+      catchPrismaNotFoundError(err, '用户不存在');
+    });
   }
 
-  async delete(id: number) {
-    try {
-      return await this.prisma.user.delete({ where: { id } });
-    } catch (e) {
-      if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === 'P2025' /* Record to delete does not exist*/
-      ) {
-        throw new NotFoundException('用户不存在');
-      }
-      throw e;
-    }
+  delete(id: number) {
+    return this.prisma.user.delete({ where: { id } }).catch((err) => {
+      catchPrismaNotFoundError(err, '用户不存在');
+    });
   }
 }

@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken';
 import { UnauthorizedException } from '../core/exception';
 import { JwtPayload } from '../shared/interface/jwt.interface';
 import { AppConfigService } from '../shared/service/app-config.service';
+import { comparePassword } from '../shared/utils';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class AuthService {
 
   async login(name: string, password: string) {
     const user = await this.userService.findOneByName(name);
-    if (!user || user.password !== password) {
+    if (!user || !(await comparePassword(password, user.password))) {
       throw new UnauthorizedException('用户名或密码错误');
     }
 

@@ -73,8 +73,8 @@ export class UserController {
     description: '只能修改除密码等敏感信息之外的基础信息',
   })
   @ApiRes()
-  update(@Param() params: FindOneDto, @Body() data: UpdateUserDto) {
-    return this.userService.update(params.id, data);
+  async update(@Param() params: FindOneDto, @Body() data: UpdateUserDto) {
+    await this.userService.update(params.id, data);
   }
 
   // --- D ---
